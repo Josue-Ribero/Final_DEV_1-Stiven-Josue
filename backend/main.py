@@ -1,5 +1,4 @@
 from fastapi import FastAPI, Request, UploadFile, File
-from .routers import jugador_router
 from .db.db import createAllTables
 
 app = FastAPI(title="sigmotoa FC", lifespan=createAllTables)

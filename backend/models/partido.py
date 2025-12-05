@@ -1,7 +1,7 @@
 from sqlmodel import SQLModel, Field, Relationship
 from typing import Optional
 from datetime import datetime as dt
-from utils.enums import ResultadoPartido, Equipos
+from ..utils.enums import ResultadoPartido, Equipos
 
 """
 Modelo base de Partido con atributos pero sin id autoincrementable

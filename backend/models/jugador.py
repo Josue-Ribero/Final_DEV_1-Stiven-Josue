@@ -1,9 +1,7 @@
 from sqlmodel import SQLModel, Field, Relationship
 from typing import Optional
 from datetime import datetime as dt
-from utils.enums import PieDominante
-from utils.positions import Position
-from utils.states import States
+from ..utils.enums import *
 
 """
 Modelo base de Jugador con atributos pero sin id autoincrementable

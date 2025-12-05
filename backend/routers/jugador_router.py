@@ -1,13 +1,13 @@
 from fastapi import APIRouter, HTTPException, Form, UploadFile, File
 from ..models.jugador import Jugador
 from ..db.db import SessionDep
-from backend.utils.bucket import cargarArchivo
+from ..utils.bucket import cargarArchivo
 from sqlmodel import select
 from ..utils.enums import *
 import os
 
 
-router = APIRouter(prefix="/jugadores", tags=["jugadores"])
+router = APIRouter(prefix="/jugadores", tags=["Jugadores"])
 
 @router.post("/", response_model=Jugador, status_code=201)
 async def crearJugador(
