@@ -1,2 +1,6 @@
+# Entornos
 entorno/
 .idea/*
+
+# Variables de entorno
+.env
