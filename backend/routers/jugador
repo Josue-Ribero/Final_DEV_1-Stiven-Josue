@@ -23,7 +23,8 @@ def create_jugador(
     valorEnMercado: float = Form(...),
     anioIngresoClub: int = Form(...),
     estado: str = Form(...)
-) -> Jugador:
+    ):
+
     jugador_data = JugadorCreate(
         nombre=nombre,
         numeroCamiseta=numeroCamiseta,
@@ -38,9 +39,6 @@ def create_jugador(
         estado=estado
     )
     
-    if foto:
-        # foto_url = upload_file(foto, "jugadores")
-        pass
 
     jugador = Jugador.from_orm(jugador_data)
     session.add(jugador)
