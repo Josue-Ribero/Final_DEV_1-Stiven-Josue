@@ -1,7 +1,9 @@
 from fastapi import FastAPI
+import backend.routers.jugador
 
 app = FastAPI(title="sigmotoa FC")
 
+app.include_router(backend.routers.jugador.router)
 
 @app.get("/")
 async def root():
