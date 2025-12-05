@@ -1,16 +1,16 @@
-from typing import List
 from fastapi import APIRouter, HTTPException, Form, UploadFile, File
-from ..models.jugador import Jugador, JugadorCreate
+from ..models.jugador import Jugador
 from ..db.db import SessionDep
-from backend.utils.bucket import upload_file
+from backend.utils.bucket import cargarArchivo
 from sqlmodel import select
 from ..utils.enums import *
+import os
 
 
 router = APIRouter(prefix="/jugadores", tags=["jugadores"])
 
-@router.post("/", response_model=Jugador)
-def create_jugador(
+@router.post("/", response_model=Jugador, status_code=201)
+def crearJugador(
     session: SessionDep,
     nombre: str = Form(...),
     numeroCamiseta: int = Form(...),
@@ -26,10 +26,34 @@ def create_jugador(
     estado: States = Form(...)
     ):
 
-    jugador_data = JugadorCreate(
+    """
+    Endpoint para crear un jugador con imagen
+    """
+    
+    # Verificar si ya existe un jugador con ese numero de camiseta
+    jugadorDB = session.exec(select(Jugador).where(Jugador.numeroCamiseta == numeroCamiseta)).first()
+
+    # Si ya existe el SKU, mostrar error
+    if jugadorDB:
+        raise HTTPException(400, f"El jugador con la camiseta {numeroCamiseta} ya existe")
+    
+    # Manejar la imagen
+    fotoURL = None
+    
+    # Si hay imagen, subirla
+    if imagen and imagen.filename:
+        try:
+            # La función cargarArchivo ahora devuelve la URL directa de Supabase
+            fotoURL = await cargarArchivo(fotoURL)
+        except Exception as e:
+            raise HTTPException(500, f"Error al subir la imagen: {str(e)}")
+    
+    # Crear el objeto del jugador
+    jugador = jugador(
         nombre=nombre,
         numeroCamiseta=numeroCamiseta,
         fechaNacimiento=fechaNacimiento,
+        fotoURL=fotoURL,
         nacionalidad=nacionalidad,
         altura=altura,
         peso=peso,
@@ -40,9 +64,9 @@ def create_jugador(
         estado=estado
     )
     
-
-    jugador = Jugador.from_orm(jugador_data)
+    # Insertar en la DB y guardar los cambios
     session.add(jugador)
     session.commit()
     session.refresh(jugador)
+
     return jugador
