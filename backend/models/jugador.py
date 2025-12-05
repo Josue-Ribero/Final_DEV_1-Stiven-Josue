@@ -11,7 +11,7 @@ Modelo base de Jugador con atributos pero sin id autoincrementable
 class JugadorBase(SQLModel):
     nombre: Optional[str] = Field(default=None)
     numeroCamiseta: Optional[int] = Field(default=1)
-    fechaNacimiento: dt = Field(default_factory=dt.now)
+    fechaNacimiento: int = Field(default=2007)
     fotoURL: Optional[str] = Field(default=None)
     nacionalidad: Optional[str] = Field(default=None)
     altura: Optional[int] = Field(default=160)

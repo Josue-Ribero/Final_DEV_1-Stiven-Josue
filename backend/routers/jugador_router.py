@@ -2,8 +2,9 @@ from typing import List
 from fastapi import APIRouter, HTTPException, Form, UploadFile, File
 from ..models.jugador import Jugador, JugadorCreate
 from ..db.db import SessionDep
-#from backend.utils.bucket import upload_file
+from backend.utils.bucket import upload_file
 from sqlmodel import select
+from ..utils.enums import *
 
 
 router = APIRouter(prefix="/jugadores", tags=["jugadores"])
@@ -14,15 +15,15 @@ def create_jugador(
     nombre: str = Form(...),
     numeroCamiseta: int = Form(...),
     fechaNacimiento: str = Form(...),
-    foto: UploadFile = File(None),
+    fotoURL: UploadFile = File(None),
     nacionalidad: str = Form(...),
     altura: int = Form(...),
     peso: float = Form(...),
-    pieDominante: str = Form(...),
-    posicion: str = Form(...),
+    pieDominante: PieDominante = Form(...),
+    posicion: Position = Form(...),
     valorEnMercado: float = Form(...),
     anioIngresoClub: int = Form(...),
-    estado: str = Form(...)
+    estado: States = Form(...)
     ):
 
     jugador_data = JugadorCreate(
