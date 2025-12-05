@@ -10,12 +10,12 @@ import os
 router = APIRouter(prefix="/jugadores", tags=["jugadores"])
 
 @router.post("/", response_model=Jugador, status_code=201)
-def crearJugador(
+async def crearJugador(
     session: SessionDep,
     nombre: str = Form(...),
     numeroCamiseta: int = Form(...),
     fechaNacimiento: str = Form(...),
-    fotoURL: UploadFile = File(None),
+    foto: UploadFile = File(None),
     nacionalidad: str = Form(...),
     altura: int = Form(...),
     peso: float = Form(...),
@@ -41,7 +41,7 @@ def crearJugador(
     fotoURL = None
     
     # Si hay imagen, subirla
-    if imagen and imagen.filename:
+    if foto and foto.filename:
         try:
             # La función cargarArchivo ahora devuelve la URL directa de Supabase
             fotoURL = await cargarArchivo(fotoURL)
